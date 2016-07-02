@@ -1,0 +1,88 @@
+<div id="tagline" class="container">
+	
+	<h1>{{ tagline }}</h1>
+
+	<br>
+
+	<div class="row">
+		<h4>Some stuff to know:</h4>
+
+		<ul>
+			<li>
+				This is intended for fun, don't get addicted #stats
+			</li>
+			<li>
+				Does not store any info from you or groupme (this is why big groups are slow)
+			</li>
+			<li>
+				Source code is ugly and on <a href="https://github.com/rossobrien/groupme" target="_blank">github</a>
+			</li>
+		</ul>
+	</div>
+
+	<div ng-hide="accessToken.length > 0">
+		<h3>
+			<a href="https://oauth.groupme.com/oauth/authorize?client_id=1WKIwz0Ur8fwc1uOT99iImbcPtQVmsP2wgHOLo99aqz7Dex7">Sign in</a>
+		</h3>
+	</div>
+
+	<div class="row" ng-show="accessToken.length > 0">
+		<div class="col-md-3" style="padding: 0px">
+			<select name="groupSelect" ng-model="selectedGroup" ng-change="getStats(selectedGroup)" class="form-control">
+				<option value="">Select a group</option>
+				<option ng-repeat="group in groups" value="{{group.group_id}}">{{group.name}}</option>
+			</select>
+		</div>
+	</div>
+
+	<table ng-show="stats.length > 0" class="table table-condensed table-bordered table-striped">
+		<thead>
+			<tr>
+				<td>
+					<a style="cursor: pointer;" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+						Name
+					</a>
+					<span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+					<span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+				</td>
+				<td>
+					<a style="cursor: pointer;" ng-click="sortType = 'posts'; sortReverse = !sortReverse">
+						Posts
+					</a>
+					<span ng-show="sortType == 'posts' && !sortReverse" class="fa fa-caret-down"></span>
+					<span ng-show="sortType == 'posts' && sortReverse" class="fa fa-caret-up"></span>
+				</td>
+				<td>
+					<a style="cursor: pointer;" ng-click="sortType = 'likes'; sortReverse = !sortReverse">
+						Likes
+					</a>
+					<span ng-show="sortType == 'likes' && !sortReverse" class="fa fa-caret-down"></span>
+					<span ng-show="sortType == 'likes' && sortReverse" class="fa fa-caret-up"></span>
+				</td>
+				<td>
+					<a style="cursor: pointer;" ng-click="sortType = 'liked'; sortReverse = !sortReverse">
+						Liked
+					</a>
+					<span ng-show="sortType == 'liked' && !sortReverse" class="fa fa-caret-down"></span>
+					<span ng-show="sortType == 'liked' && sortReverse" class="fa fa-caret-up"></span>
+				</td>
+				<td>
+					<a style="cursor: pointer;" ng-click="sortType = 'lpp'; sortReverse = !sortReverse">
+						Likes per Post
+					</a>
+					<span ng-show="sortType == 'lpp' && !sortReverse" class="fa fa-caret-down"></span>
+					<span ng-show="sortType == 'lpp' && sortReverse" class="fa fa-caret-up"></span>
+				</td>
+			</tr>
+		</thead>
+		<tr ng-repeat="stat in stats | orderBy:sortType:sortReverse">
+			<td>{{stat.name}}</td>
+			<td>{{stat.posts}}</td>
+			<td>{{stat.likes}}</td>
+			<td>{{stat.liked}}</td>
+			<td>{{stat.lpp | number: 2}}</td>
+		</tr>
+	</table>
+
+	<div ng-show="loading"><h4>Loading...</h4></div>
+</div>
